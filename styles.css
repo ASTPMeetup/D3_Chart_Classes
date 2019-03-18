@@ -1,0 +1,33 @@
+body {
+    background: -webkit-linear-gradient(270deg, rgba(52, 68, 85, 1) 0%, rgba(52, 68, 85, 1) 0%, rgba(52, 68, 85, 1) 100%, rgba(52, 68, 85, 1) 100%);
+}
+.app {
+    width: 70%;
+}
+text {
+    font-size: .75rem;
+    fill: #929FA8;
+}
+.y-axis line,
+.x-axis line,
+.y-axis path,
+.x-axis path {
+    fill: none;
+    stroke: #0D1620;
+    stroke-width: .15rem;
+}
+.x-axis .minor-tick line {
+    transform: scale(.5);
+}
+.d3-tooltip .arrow {
+    border-top-color: #0D1620;
+}
+.d3-tooltip .tooltip-inner {
+    background: #0D1620;
+}
+.d3-tooltip .tooltip-top-text {
+    color: #f2f2f2;
+}
+.d3-tooltip .tooltip-bottom-text {
+    color: #929FA8;
+}

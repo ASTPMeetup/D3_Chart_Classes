@@ -6,7 +6,7 @@ class HorizontalBarChart {
         this.height = 250;
         this.width = 500;
         this.barPadding = 10;
-        this.chartPadding = 25;
+        this.chartPadding = 35;
         this.chartMargin = 100;
         this.labelsMargin = 10;
     }
@@ -72,8 +72,7 @@ class HorizontalBarChart {
             .orient("left")
             .tickPadding(5);
 
-        yAxisGroup.call(setYAxisLabels)
-            .select(".domain").remove();
+        yAxisGroup.call(setYAxisLabels);
     }
     groupDataByGroupProp() {
         this.data = groupData()
