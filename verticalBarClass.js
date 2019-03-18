@@ -9,7 +9,7 @@ class VerticalBarChart {
         this.height = 250;
         this.barPadding = 5;
         this.barWidth = 10;
-        this.barColor = "#3dc6ef";
+        this.barColor = "rgb(61, 198, 239)";
         this.barGroupPadding = 20;
         this.axisPadding = 10;
         this.timeSpan = "year";
@@ -31,41 +31,40 @@ class VerticalBarChart {
             .attr("id", this.chartId)
             .attr("viewBox", "0 0 " + (this.width + this.chartMargin) + " " + (this.height + this.chartMargin) + "");
 
-        // create bar group container to encapsulate bars -- CLASS NAME: "bar-group"
+        // TARGET CLASS: "bar-group" -- create bar group container to encapsulate bars
         let barGroup = svg.append("g")
             .attr("class", "bar-group")
             .attr("transform", "translate(" + (this.chartPadding + this.barGroupPadding) + "," + this.chartPadding + ")");
 
-
-        // append bars to bar group -- CLASS NAMES: "bar-chart-rect"
+        // TARGET CLASS: "bar-chart-rect" -- append bars to bar group class
         barGroup.selectAll(".bar")
             .data(data)
             .enter()
-                .append("rect")
-                .attr("class", "bar-chart-rect")
-                .attr("y", (d)=> {
-                    return this.yScale(d.value)
-                })
-                .attr("height",(d)=> {
-                    return this.height - this.yScale(d.value);
-                })
-                .attr("x", (d)=> {
-                    return this.xScale(new Date(d.key)) - this.barPadding;
-                })
-                .attr("width", (d)=> {
-                    return this.barWidth;
-                })
-                .style("fill", (d,i) => {
-                   return this.barColor;
+            .append("rect")
+            .attr("class", "bar-chart-rect")
+            .attr("y", (d)=> {
+                return this.yScale(d.value)
+            })
+            .attr("height",(d)=> {
+                return this.height - this.yScale(d.value);
+            })
+            .attr("x", (d)=> {
+                return this.xScale(new Date(d.key)) - this.barPadding;
+            })
+            .attr("width", (d)=> {
+                return this.barWidth;
+            })
+            .style("fill", (d,i) => {
+                return this.barColor;
             });
 
-        // create X Axis group -- CLASS NAME: "x-axis"
+        // TARGET CLASS: "x-axis" -- create X Axis group
         svg.append("g")
             .attr("class", "x-axis")
             .attr("transform", "translate(" + (this.chartPadding + this.barGroupPadding) +
                 "," + (this.height + this.chartPadding + this.axisPadding) + ")");
 
-        // create Y Axis group -- CLASS NAME: "y-axis"
+        // TARGET CLASS: "y-axis" -- create Y Axis group
         svg.append("g")
             .attr("class", "y-axis")
             .attr("transform", "translate(" + (this.chartPadding - this.axisPadding) +
@@ -94,15 +93,15 @@ class VerticalBarChart {
         return d3.time.scale()
             .domain([startDate, new Date()])
             .rangeRound([0, this.width])
-            .nice(d3.time[this.mapTimeSpanToTickRange[this.timeSpan]]);
+            .nice(d3.time[this.mapTimeSpanToTickRange]);
     }
     modifyXDomain(startDate) {
         this.xScale = d3.time.scale()
-                        .domain([startDate, new Date()])
-                        .rangeRound([0, this.width])
-                        .nice(d3.time[this.mapTimeSpanToTickRange[this.timeSpan]]);
+            .domain([startDate, new Date()])
+            .rangeRound([0, this.width])
+            .nice(d3.time[this.mapTimeSpanToTickRange]);
     }
-    mapTimeSpanToTickRange(timeSpan) {
+    mapTimeSpanToTickRange() {
         const mapTimeSpanToTimeTick = {
             max: 'month',
             year: 'week',
@@ -111,7 +110,7 @@ class VerticalBarChart {
             week: 'day'
         };
 
-        return mapTimeSpanToTimeTick[timeSpan];
+        return mapTimeSpanToTimeTick[this.timeSpan];
     }
     setAxisToTimeSpan() {
         switch(this.timeSpan) {
@@ -206,7 +205,6 @@ class VerticalBarChart {
         this.modifyXDomain(minDate);
 
         const formatTickMark = (d) => {
-            console.log(d);
             if (d.getMonth() === 0) {
                 let formatToMonth = d3.time.format("%Y");
                 return formatToMonth(d);
@@ -267,7 +265,7 @@ class VerticalBarChart {
             'mouseenter': function(d) {
                 let dateString = new Date(d.key);
                 let topText = dateString.toLocaleDateString();
-                let bottomText = d.value + " Projects Completed";
+                let bottomText = d.value + " Total Projects.";
                 displayToolTip(chartId, topText, bottomText);
             },
             'mouseleave': function(){
