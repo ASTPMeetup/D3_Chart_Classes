@@ -226,7 +226,7 @@ class VerticalBarChart {
             .orient("bottom")
             .innerTickSize(30)
             .outerTickSize(0)
-            .ticks(numOfTicks)
+            .ticks(d3.time.month)
             .tickFormat((d,i) => {
                 return setTickMark(d, i);
             });

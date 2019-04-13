@@ -14,6 +14,22 @@ let d = [
     {"area": "HTML5 ", "value": 90},
     {"area": "Photoshop ", "value": 40},
     {"area": "Accessibility ", "value": 85},
+  ],
+  [
+    {"area": "Redux ", "value": 60},
+    {"area": "Node ", "value": 25},
+    {"area": "Bootstrap ", "value": 35},
+    {"area": "React ", "value": 45},
+    {"area": "ES6 ", "value": 55},
+    {"area": "CSS3 ", "value": 80},
+    {"area": "MongoDB ", "value": 65},
+    {"area": "Backbone", "value": 20},
+    {"area": "Angular ", "value": 10},
+    {"area": "Meteor ", "value": 18},
+    {"area": "D3", "value": 44},
+    {"area": "HTML5 ", "value": 30},
+    {"area": "Photoshop ", "value": 90},
+    {"area": "Accessibility ", "value": 65},
   ]
 ];
 
@@ -138,7 +154,7 @@ class RadarBarChart {
           .append("polygon")
           .attr("class", "radar-chart-series")
           .style("stroke-width", "2px")
-          .style("stroke", "rgb(1, 37, 97)")
+          .style("stroke", "#FF8C00")
           .attr("points",function(d) {
             let pointsPath="";
             for(let i=0;i<d.length;i++){
@@ -146,7 +162,7 @@ class RadarBarChart {
             }
             return pointsPath;
           })
-          .style("fill", "rgb(1, 37, 97)")
+          .style("fill", "#FFB700")
           .style("fill-opacity", 0.25);
       });
     }
