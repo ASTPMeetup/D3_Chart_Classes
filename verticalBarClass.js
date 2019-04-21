@@ -1,4 +1,4 @@
-class VerticalBarChart {
+export class VerticalBarChart {
     constructor(data, chartName, chartId, options) {
         this.data = data;
         this.chartName = chartName;

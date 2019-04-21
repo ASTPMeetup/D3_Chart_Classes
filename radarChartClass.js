@@ -17,7 +17,7 @@ let d = [
   ]
 ];
 
-class RadarBarChart {
+export class RadarBarChart {
     constructor(id) {
       this.data = d;
       this.width = 300;
