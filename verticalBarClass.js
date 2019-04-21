@@ -192,7 +192,7 @@ export class VerticalBarChart {
                 let formatToMonth = d3.time.format("%b");
                 return formatToMonth(d);
             } else {
-                return "";
+                return 0;
             }
         };
 
@@ -226,7 +226,7 @@ export class VerticalBarChart {
             .orient("bottom")
             .innerTickSize(30)
             .outerTickSize(0)
-            .ticks(numOfTicks)
+            .ticks(d3.time.month)
             .tickFormat((d,i) => {
                 return setTickMark(d, i);
             });
@@ -234,11 +234,16 @@ export class VerticalBarChart {
         xAxisGroup.call(setXAxisLabels)
             .select(".domain").remove();
 
-        xAxisGroup.selectAll("g")
+        const smallTickMarks = xAxisGroup.selectAll("g")
             .filter(function (d, i) {
                 return !setTickMark(d,i);
             })
             .attr("class", "minor-tick");
+
+        const smallText = smallTickMarks.selectAll("text")
+            .attr("dy", "-0.5rem");
+
+        console.log(smallText);
     }
     appendYAxisLabels(){
         let yAxisGroup = d3.select(".y-axis");
