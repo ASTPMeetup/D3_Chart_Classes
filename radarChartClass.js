@@ -1,4 +1,4 @@
-let d = [
+let dataArray = [
   [
     {"area": "Redux ", "value": 50},
     {"area": "Node ", "value": 75},
@@ -35,13 +35,13 @@ let d = [
 
 class RadarBarChart {
     constructor(id) {
-      this.data = d;
-      this.width = 300;
-      this.height = 300;
+      this.data = dataArray;
+      this.width = 350;
+      this.height = 350;
       this.id = id;
       this.factorLegend = .85;
       this.radians = 2 * Math.PI;
-      this.ToRight = 5;
+      this.polygonColors = d3.schemeCategory10;
       this.TranslateX = 80;
       this.TranslateY = 30;
       this.ExtraWidthY = 100;
@@ -117,7 +117,7 @@ class RadarBarChart {
         .style("font-family", "Open Sans")
         .style("font-size", "14px")
         .style("font-weight", "300")
-        .style("color", "#666666")
+        .style("fill", "#f2f2f2")
         .attr("text-anchor", "middle")
         .attr("dy", "1.2em")
         .attr("transform", function(d, i){return "translate(0, -10)"})
@@ -133,10 +133,11 @@ class RadarBarChart {
       const LineLevelRadius = this.radians / allAxis.length;
       const width = this.width;
       const height = this.height;
+      const colors = this.polygonColors;
 
       let LineLevelsGroup = d3.select('.line-levels');
 
-      this.data.forEach(function(y, x){
+      this.data.forEach(function(y, index){
         let dataValues = [];
 
         LineLevelsGroup.selectAll(".nodes")
@@ -152,9 +153,10 @@ class RadarBarChart {
           .data([dataValues])
           .enter()
           .append("polygon")
-          .attr("class", "radar-chart-series")
+          .attr("id", "dev" + (index + 1) + "-polygon")
+          .attr("class", "radar-chart-polygon")
           .style("stroke-width", "2px")
-          .style("stroke", "#FF8C00")
+          .style("stroke", colors[index])
           .attr("points",function(d) {
             let pointsPath="";
             for(let i=0;i<d.length;i++){
@@ -162,8 +164,19 @@ class RadarBarChart {
             }
             return pointsPath;
           })
-          .style("fill", "#FFB700")
-          .style("fill-opacity", 0.25);
+          .style("fill", colors[index])
+          .attr("fill-opacity", 0.25);
       });
     }
 };
+
+const attachBtnClickEvents = () => {
+  const togglePolygonOpacity = (e) => {
+    d3.selectAll(".radar-chart-polygon").attr("fill-opacity", 0.25);
+    d3.select("#" + e.target.id + "-polygon").attr("fill-opacity", 0.75);
+  };
+
+  Array.from(document.getElementsByClassName("btn")).forEach((element) => {
+    element.addEventListener("mouseover", togglePolygonOpacity);
+  });
+}
