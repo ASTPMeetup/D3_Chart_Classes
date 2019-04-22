@@ -111,7 +111,6 @@ export class DonutChartClass {
             });
     }
     setChartEvents() {
-        let instance = this;
         return {
             'mouseover': (d) => {
                 const elementNode = d3.select(this);
@@ -122,7 +121,7 @@ export class DonutChartClass {
                 const elementNode = d3.select(this);
                 instance.hideArcData(elementNode);
             }
-        };
+        }
     }
     displayArcData(elementNode, data) {
         let svg = d3.select('#' + this.chartId + "-group");
