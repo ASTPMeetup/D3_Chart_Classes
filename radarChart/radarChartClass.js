@@ -1,4 +1,4 @@
-let dataArray = [
+let RadarDataArray = [
   [
     {"area": "Redux ", "value": 50},
     {"area": "Node ", "value": 75},
@@ -34,14 +34,14 @@ let dataArray = [
 ];
 
 class RadarBarChart {
-    constructor(id) {
-      this.data = dataArray;
+    constructor(className) {
+      this.data = RadarDataArray;
       this.width = 350;
       this.height = 350;
-      this.id = id;
+      this.className = className;
       this.factorLegend = .85;
       this.radians = 2 * Math.PI;
-      this.polygonColors = d3.schemeCategory10;
+      this.polygonColors = ["rgb(31, 119, 180)", "rgb(255, 127, 14)"];
       this.TranslateX = 80;
       this.TranslateY = 30;
       this.ExtraWidthY = 100;
@@ -52,7 +52,9 @@ class RadarBarChart {
     drawSVG() {
       const allAxis = this.data[0].map((i) => i.area);
 
-      let svg = d3.select(this.id)
+      d3.select("svg").remove();
+
+      let svg = d3.select('.' + this.className)
               .append("svg")
               .attr("width", this.width+this.ExtraWidthX)
               .attr("height", this.height+this.ExtraWidthY);
@@ -114,7 +116,7 @@ class RadarBarChart {
       axis.append("text")
         .attr("class", "label")
         .text(function(d){return d})
-        .style("font-family", "Open Sans")
+        .style("font-family", "'Roboto', sans-serif")
         .style("font-size", "14px")
         .style("font-weight", "300")
         .style("fill", "#f2f2f2")
@@ -168,15 +170,15 @@ class RadarBarChart {
           .attr("fill-opacity", 0.25);
       });
     }
-};
+}
 
 const attachBtnClickEvents = () => {
-  const togglePolygonOpacity = (e) => {
+  const highlightPolygon = (e) => {
     d3.selectAll(".radar-chart-polygon").attr("fill-opacity", 0.25);
     d3.select("#" + e.target.id + "-polygon").attr("fill-opacity", 0.75);
   };
 
-  Array.from(document.getElementsByClassName("btn")).forEach((element) => {
-    element.addEventListener("mouseover", togglePolygonOpacity);
+  Array.from(document.getElementsByTagName("button")).forEach((element) => {
+    element.addEventListener("mouseenter", highlightPolygon);
   });
-}
+};

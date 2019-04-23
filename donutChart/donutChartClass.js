@@ -1,4 +1,4 @@
-const dataArray = [
+const donutDataArray = [
     {
         "key": "Q1",
         "value": 12
@@ -19,7 +19,7 @@ const dataArray = [
 
 class DonutChartClass {
     constructor(chartClass, chartId, options) {
-        let chartData = dataArray.filter((d) => parseInt(d.value) > 0);
+        let chartData = donutDataArray.filter((d) => parseInt(d.value) > 0);
 
         this.chartId = chartId;
         this.chartClass = chartClass;
@@ -29,10 +29,10 @@ class DonutChartClass {
         this.height = 135;
         this.pieFill = 360;
         this.total = chartData.reduce((a, b) => a + b.value, 0);
-        this.chartFill = ["darkblue", "red", "green", "yellow"];
-        this.header = "";
-        this.subHeader = "";
-        this.translatedText = false;
+        this.chartFill = ["#673ab7", "#3f51b5", "#f44336", "#009688"];
+        this.header = "Quarterly";
+        this.subHeader = "Sales";
+        this.translatedText = true;
         this.gradientFill = false;
         this.dataFormat = "percentage";
 
@@ -45,7 +45,7 @@ class DonutChartClass {
         }
     }
     drawSVG() {
-        d3.select('#' + this.chartId).remove();
+        d3.select('svg').remove();
 
         let svg = d3.select('.' + this.chartClass).append('svg')
             .attr('class', 'fragmented-donut-chart')
@@ -91,7 +91,6 @@ class DonutChartClass {
             .attr('d', arc)
             .attr('class', 'chart_arc')
             .style("cursor", "pointer")
-            .style("opacity", "0.7")
             .attr('stroke-width', '.175vw')
             .attr("id", (d) => {
                 return "arc_" + d.data.key;
@@ -114,6 +113,7 @@ class DonutChartClass {
             .style("text-anchor", "middle")
             .attr("fill", "#C5C5C5")
             .attr("font-size", '.936vw')
+            .style("font-family", "'Roboto', sans-serif")
             .attr("class", "header-text")
             .text(()=> {
                 return (this.header) ? this.header : this.chartId.toLowerCase();
@@ -125,6 +125,7 @@ class DonutChartClass {
             .style("text-transform", "lowercase")
             .attr("fill", "#C5C5C5")
             .attr("font-size", '.728vw')
+            .style("font-family", "'Roboto', sans-serif")
             .attr("class", "sub-header-text")
             .text(()=> {
                 return (this.subHeader) ? this.subHeader : "distribution";

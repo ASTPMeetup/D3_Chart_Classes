@@ -1,9 +1,17 @@
 <html>
     <head>
-            <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-            <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-            <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-            <script src="https://unpkg.com/@material-ui/core/umd/material-ui.production.min.js" crossorigin="anonymous"></script>
+        <link href="./styles.css" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css?family=Roboto:200" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+        <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <script src="https://unpkg.com/@material-ui/core/umd/material-ui.production.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+        <script src="donutChart/donutChartClass.js"></script>
+        <script src="radarChart/radarChartClass.js"></script>
+        <script src="groupedChart/groupedBarChart.js"></script>
+        <script src="groupedChart/data.js"></script>
     </head>
     <body>
         <div id="root"></div>
@@ -11,37 +19,107 @@
         <script type="text/babel">
         const {
             Tab,
-            Tabs
+            Tabs,
+            AppBar,
+            Button
         } = window['material-ui'];
 
-        class CenteredTabs extends React.Component {
-            state = {
-                value: 0,
-            };
+        class Slider extends React.Component {
+            state = {value: 100};
 
-            handleChange = (event, value) => {
-                this.setState({ value });
+            handleSliderChange(event) {
+                this.setState({value: event.target.value});
+                drawGroupedBarChart('chart', data, event.target.value);
+            };
+            render() {
+                return (
+                    <div className="slider-container">
+                        <input
+                            type="range"
+                            value={this.state.value}
+                            min="1"
+                            max="100"
+                            step="1"
+                            onChange={this.handleSliderChange.bind(this)}/>
+                    </div>
+                );
+            };
+        }
+
+        class ButtonRow extends React.Component {
+            componentDidMount() {
+                attachBtnClickEvents();
+            }
+            render() {
+                return (
+                    <div className="buttons">
+                        <Button id="dev1" color="primary">Dev One</Button>
+                        <Button id="dev2" color="secondary">Dev Two</Button>
+                    </div>
+                );
+            }
+        }
+
+        class App extends React.Component {
+            state = {
+                tabValue: 0,
+                sliderValue: 100,
+                displayHelperComponent: 'buttons'
+            };
+            componentDidMount() {
+                let radarChart = new RadarBarChart('chart');
+                radarChart.drawSVG();
+            }
+            handleTabChange = (event, value) => {
+                let stateProps = this.state;
+
+                if (value === 0) {
+                    stateProps.displayHelperComponent = 'buttons';
+                } else if (value === 1) {
+                    stateProps.displayHelperComponent = 'slider';
+                } else {
+                    stateProps.displayHelperComponent = '';
+                }
+
+                stateProps.tabValue = value;
+                this.setState(stateProps);
+            };
+            displayRadarChart () {
+                let radarChart = new RadarBarChart('chart');
+                radarChart.drawSVG();
+            };
+            displayDonutChart () {
+                let donutChart = new DonutChartClass('chart', "donut-chart");
+                donutChart.drawSVG();
+            };
+            displayGroupedChart () {
+                drawGroupedBarChart('chart', data);
             };
 
             render() {
                 return (
-                    <Tabs
-                        value={this.state.value}
-                        onChange={this.handleChange}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        centered
-                        >
-                        <Tab label="Item One" />
-                        <Tab label="Item Two" />
-                        <Tab label="Item Three" />
-                    </Tabs>
+                    <div>
+                        <AppBar position="fixed" color="primary">
+                            <Tabs
+                                value={this.state.tabValue}
+                                onChange={this.handleTabChange}
+                                centered>
+                                <Tab label="Radar" onClick={this.displayRadarChart}/>
+                                <Tab label="Grouped Chart" onClick={this.displayGroupedChart}/>
+                                <Tab label="Donut Chart" onClick={this.displayDonutChart}/>
+                            </Tabs>
+                        </AppBar>
+                        <div className="chart-container">
+                            {this.state.displayHelperComponent === 'buttons' ? <ButtonRow/> : ''}
+                            <div className="chart"></div>
+                            {this.state.displayHelperComponent === 'slider' ? <Slider/> : ''}
+                        </div>
+                    </div>
                 );
             }
         }
-        const App = CenteredTabs;
 
-        ReactDOM.render(<App />, document.getElementById('root'));
+        ReactDOM.render(<App/>, document.getElementById('root'));
         </script>
     </body>
 </html>
