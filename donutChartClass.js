@@ -142,7 +142,7 @@ class DonutChartClass {
                 const elementNode = d3.select(this);
                 instance.hideArcData("arc_" + d.data.key);
             }
-        };
+        }
     }
     displayArcData(elementNode, data) {
         let svg = d3.select("#" + this.chartId);

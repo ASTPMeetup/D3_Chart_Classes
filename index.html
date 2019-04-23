@@ -1,0 +1,47 @@
+<html>
+    <head>
+            <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+            <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+            <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+            <script src="https://unpkg.com/@material-ui/core/umd/material-ui.production.min.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script type="text/babel">
+        const {
+            Tab,
+            Tabs
+        } = window['material-ui'];
+
+        class CenteredTabs extends React.Component {
+            state = {
+                value: 0,
+            };
+
+            handleChange = (event, value) => {
+                this.setState({ value });
+            };
+
+            render() {
+                return (
+                    <Tabs
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        centered
+                        >
+                        <Tab label="Item One" />
+                        <Tab label="Item Two" />
+                        <Tab label="Item Three" />
+                    </Tabs>
+                );
+            }
+        }
+        const App = CenteredTabs;
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+        </script>
+    </body>
+</html>
