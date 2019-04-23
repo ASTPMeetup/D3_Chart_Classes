@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    body {
+        text-align: center;
+        background: #333;
+    }
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #D4D8DA;
+      stroke-width: 2px;
+      shape-rendering: crispEdges;
+    }
+    .buttons {
+        padding: 20px;
+    }
+    #dev1, #dev2 {
+        padding: 5px 50px;
+        color: #f2f2f2;
+    }
+    #dev1 {
+        background: rgb(31, 119, 180);
+        margin: 20px;
+    }
+    #dev2 {
+        background: rgb(255, 127, 14);
+        margin: 20px;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+<script src="radarChartClass.js"></script>
+<body>
+    <div class="buttons">
+        <span><button class="btn" id="dev1">Dev 1</button></span>
+        <span><button class="btn" id="dev2">Dev 2</button></span>
+    </div>
+    <div id="chart"></div>
+    <script>
+    //Call function to draw the Radar chart
+    let radarChart = new RadarBarChart('#chart');
+    radarChart.drawSVG();
+    attachBtnClickEvents();
+    </script>
+</body>

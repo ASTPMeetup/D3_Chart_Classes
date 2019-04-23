@@ -1,6 +1,25 @@
-export class DonutChartClass {
-    constructor(chartClass, chartId, data, options) {
-        let chartData = data.filter((d) => parseInt(d.value) > 0);
+const dataArray = [
+    {
+        "key": "Q1",
+        "value": 12
+    },
+    {
+        "key": "Q2",
+        "value": 4
+    },
+    {
+        "key": "Q3",
+        "value": 2
+    },
+    {
+        "key": "Q4",
+        "value": 9
+    }
+];
+
+class DonutChartClass {
+    constructor(chartClass, chartId, options) {
+        let chartData = dataArray.filter((d) => parseInt(d.value) > 0);
 
         this.chartId = chartId;
         this.chartClass = chartClass;
@@ -10,7 +29,7 @@ export class DonutChartClass {
         this.height = 135;
         this.pieFill = 360;
         this.total = chartData.reduce((a, b) => a + b.value, 0);
-        this.chartFill = "#EE6411";
+        this.chartFill = ["darkblue", "red", "green", "yellow"];
         this.header = "";
         this.subHeader = "";
         this.translatedText = false;
@@ -28,7 +47,7 @@ export class DonutChartClass {
     drawSVG() {
         d3.select('#' + this.chartId).remove();
 
-        let svg = d3.select('.' + this.chartClass + "_" + this.chartId).append('svg')
+        let svg = d3.select('.' + this.chartClass).append('svg')
             .attr('class', 'fragmented-donut-chart')
             .attr('id', this.chartId)
             .attr("viewBox", "0 0 " + this.width + " " + this.height)
@@ -72,19 +91,20 @@ export class DonutChartClass {
             .attr('d', arc)
             .attr('class', 'chart_arc')
             .style("cursor", "pointer")
+            .style("opacity", "0.7")
             .attr('stroke-width', '.175vw')
-            .attr("stroke", (d) => {
-                return this.chartFill;
+            .attr("id", (d) => {
+                return "arc_" + d.data.key;
             })
-            .on(this.setChartEvents());
+            .attr("stroke", (d, i) => {
+                return this.chartFill[i];
+            });
 
         arcGroup.selectAll('path')
-            .attr("id", (d, i) => {
-                return "arc_" + i;
-            })
             .attr("d", d3.svg.arc()
                 .innerRadius(this.radius - 13)
-                .outerRadius(this.radius - 14));
+                .outerRadius(this.radius - 14))
+            .on(this.setChartEvents());
     }
     appendCenterText() {
         let svg = d3.select('#' + this.chartId + "-group");
@@ -111,24 +131,27 @@ export class DonutChartClass {
             });
     }
     setChartEvents() {
+        let instance = this;
         return {
             'mouseover': (d) => {
                 const elementNode = d3.select(this);
-                instance.displayArcData(elementNode, d.data);
+                instance.displayArcData("arc_" + d.data.key, d.data);
 
             },
             'mouseout': (d) => {
                 const elementNode = d3.select(this);
-                instance.hideArcData(elementNode);
+                instance.hideArcData("arc_" + d.data.key);
             }
         }
     }
     displayArcData(elementNode, data) {
-        let svg = d3.select('#' + this.chartId + "-group");
+        let svg = d3.select("#" + this.chartId);
+        let selectedNode = d3.select('#' + elementNode);
 
-        elementNode.transition()
-            .style("opacity", "1")
-            .attr('stroke-width', '.25vw');
+        selectedNode.transition()
+            .duration(500)
+            .ease('bounce')
+            .attr('stroke-width', '.5vw');
 
         svg.select('.header-text')
             .text(() => {
@@ -137,16 +160,16 @@ export class DonutChartClass {
 
         svg.select('.sub-header-text')
             .text(() => {
-                return data.value;
+                return Math.round( (data.value/ this.total) * 100) + "%";
             });
     }
     hideArcData(elementNode) {
-        let svg = d3.select('#' + this.chartId + "-group");
+        let svg = d3.select("#" + this.chartId);
+        let selectedNode = d3.select('#' + elementNode);
 
-        elementNode.transition()
-            .duration(500)
+        selectedNode.transition()
+            .duration(250)
             .ease('bounce')
-            .style("opacity", "0.7")
             .attr('stroke-width', '.175vw');
 
         svg.select('.header-text')

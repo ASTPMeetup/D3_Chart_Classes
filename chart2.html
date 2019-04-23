@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<style>
+    body {
+        text-align: center;
+        background: #333;
+        padding: 100px;
+    }
+    .group-bar-chart {
+        position: relative;
+        top: .52vw;
+        padding-bottom: 20px;
+    }
+    .domain {
+        display: none;
+    }
+    text {
+        font-weight: normal;
+        font-size: .75vw;
+        fill: #f2f2f2;
+    }
+    .d3-tooltip.arrow {
+        border-top-color: #333333;
+    }
+    .d3-tooltip.tooltip-inner{
+        background-color: #333333;
+    .d3-tooltip.tooltip-top-text {
+        color: #333333;
+    }
+    .d3-tooltip.tooltip-bottom-text {
+        color: #f2f2f2;
+    }
+    .slider {
+        padding-top: 20px;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+<script src="groupedBarChart.js"></script>
+<body>
+    <div class="chart"></div>
+    <div class="slider">
+        <form>
+            <div class="form-group">
+                <input type="range" class="custom-range" min="1" max="100" steps="1" value="100" id="range">
+            </div>
+        </form>
+    </div>
+    <script>
+        //Call function to draw chart
+        drawGroupedBarChart('chart', dataArray);
+        filterArrayWithSlider();
+    </script>
+</body>
+</html>

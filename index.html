@@ -1,58 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>D3 Chart</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="app"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
-    <script src="verticalBarClass.js"></script>
-    <script>
+<html>
+    <head>
+            <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+            <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+            <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+            <script src="https://unpkg.com/@material-ui/core/umd/material-ui.production.min.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div id="root"></div>
 
-        // *** YEAR AND MAX DATES ***
-        const data = [
-            {key: '07/01/2017', value: 15},
-            {key: '08/01/2017', value: 10},
-            {key: '09/01/2017', value: 17},
-            {key: '11/01/2018', value: 30},
-            {key: '12/01/2018', value: 15},
-            {key: '08/01/2018', value: 10},
-            {key: '09/01/2018', value: 17},
-            {key: '10/14/2018', value: 30},
-            {key: '11/01/2018', value: 11},
-            {key: '03/27/2018', value: 20},
-            {key: '04/21/2018', value: 23},
-            {key: '07/11/2018', value: 15},
-            {key: '08/12/2018', value: 10},
-            {key: '09/20/2018', value: 17},
-            {key: '01/11/2019', value: 90},
-            {key: '02/11/2019', value: 11},
-            {key: '03/12/2019', value: 11}
-        ];
+        <script type="text/babel">
+        const {
+            Tab,
+            Tabs
+        } = window['material-ui'];
 
+        class CenteredTabs extends React.Component {
+            state = {
+                value: 0,
+            };
 
-        // *** QUARTER AND MONTH DATES ***
-        // const data = [
-        //     {key: '02/17/2019', value: 20},
-        //     {key: '02/24/2019', value: 30},
-        //     {key: '03/03/2019', value: 11},
-        //     {key: '03/10/2019', value: 35}
-        // ];
+            handleChange = (event, value) => {
+                this.setState({ value });
+            };
 
+            render() {
+                return (
+                    <Tabs
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        centered
+                        >
+                        <Tab label="Item One" />
+                        <Tab label="Item Two" />
+                        <Tab label="Item Three" />
+                    </Tabs>
+                );
+            }
+        }
+        const App = CenteredTabs;
 
-        // // *** WEEK DATES ***
-        // const data = [
-        //     {key: '03/09/2019', value: 30},
-        //     {key: '03/10/2019', value: 11},
-        //     {key: '03/12/2019', value: 15},
-        //     {key: '03/14/2019', value: 5}
-        // ];
-
-        let barchart = new VerticalBarChart(data, 'app', 'myBarChart', {timeSpan: 'year'});
-        barchart.drawSVG();
-        barchart.attachDateToolTips();
-    </script>
-</body>
+        ReactDOM.render(<App />, document.getElementById('root'));
+        </script>
+    </body>
 </html>
